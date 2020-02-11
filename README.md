@@ -1,4 +1,7 @@
 # remote-file-info
+
+![npm](https://img.shields.io/npm/v/remote-file-info) [![Build Status](https://travis-ci.org/iqqmuT/remote-file-info.svg?branch=master)](https://travis-ci.org/iqqmuT/remote-file-info)
+
 A node module for fetching information about remote file
 
 Fetches information about remote file without downloading the entire file. If given URL
