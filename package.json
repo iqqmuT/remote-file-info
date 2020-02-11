@@ -1,0 +1,27 @@
+{
+  "name": "remote-file-info",
+  "version": "0.1.0",
+  "description": "Fetches information about remote file",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iqqmuT/remote-file-info.git"
+  },
+  "author": "Tuomas Jaakola <tuomas.jaakola@iki.fi>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iqqmuT/remote-file-info/issues"
+  },
+  "homepage": "https://github.com/iqqmuT/remote-file-info#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-promise": "^4.2.1"
+  },
+  "dependencies": {
+    "image-size": "^0.8.3"
+  }
+}
