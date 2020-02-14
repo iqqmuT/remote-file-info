@@ -8,7 +8,7 @@ const HEADER_CONTENT_TYPE = 'content-type';
 
 // Minimum amount of image data needed to be downloaded
 // before determining the image dimensions
-const DEFAULT_DOWNLOAD_IMG_BYTES = 8192;
+const DEFAULT_DOWNLOAD_IMG_BYTES = 32 * 1024;
 
 const IMAGE_EXTENSIONS = [
   '.jpg', '.jpeg',
