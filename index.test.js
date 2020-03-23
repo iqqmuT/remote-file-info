@@ -34,12 +34,30 @@ test('options work when fetching', async () => {
   expect(info.mediaType).toBe('image/jpeg');
 });
 
+test('works with big image with default options', async () => {
+  // A big JPG picture
+  const url = 'https://www.nasa.gov/sites/default/files/thumbnails/image/milkyway.jpg';
+  let error;
+  let info = {};
+  try {
+    info = await fetchInfo(url);
+  } catch (e) {
+    error = e;
+  }
+  expect(error).toBeUndefined();
+  expect(info).toMatchObject({
+    fileSize: 6516177,
+    height: 3403,
+    width: 10800,
+  });
+});
+
 test('downloading too little data throws Corrupt JPG exception', async () => {
   // A big JPG picture
   const url = 'https://www.nasa.gov/sites/default/files/thumbnails/image/milkyway.jpg';
   let error;
   try {
-    info = await fetchInfo(url, {
+    await fetchInfo(url, {
       // download as little data as possible
       downloadImgBytes: 8,
       isImage: true,
