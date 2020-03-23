@@ -27,7 +27,7 @@ const useHttp = url => url.startsWith('https:') ? https : http;
 // Downloads file a few kilobytes until it is possible read
 // information about the image.
 const readImageInfo = (url, options) => new Promise((resolve, reject) => {
-  let resolved = false;
+  let finished = false;
   let downloadImgBytes = options.downloadImgBytes || DEFAULT_DOWNLOAD_IMG_BYTES;
   if (downloadImgBytes === -1) {
     // download entire file
@@ -49,13 +49,17 @@ const readImageInfo = (url, options) => new Promise((resolve, reject) => {
           chunks.push(chunk);
           const buffer = Buffer.concat(chunks);
 
-          if (!resolved && buffer.length >= downloadImgBytes) {
-            // read image size from first few kilobytes of image data
-            const info = imageSize(buffer);
-            info.fileSize = fileSize;
-            info.mediaType = res.headers[HEADER_CONTENT_TYPE];
-            resolve(info);
-            resolved = true;
+          if (!finished && buffer.length >= downloadImgBytes) {
+            try {
+              // read image size from first few kilobytes of image data
+              const info = imageSize(buffer);
+              info.fileSize = fileSize;
+              info.mediaType = res.headers[HEADER_CONTENT_TYPE];
+              resolve(info);
+            } catch (e) {
+              reject(e);
+            }
+            finished = true;
 
             // stop downloading
             res.destroy();
@@ -63,14 +67,18 @@ const readImageInfo = (url, options) => new Promise((resolve, reject) => {
         })
         .on('end', () => {
           // entire file was downloaded
-          if (!resolved) {
-            // might get here when file size is small enough
-            const buffer = Buffer.concat(chunks);
-            const info = imageSize(buffer);
-            info.fileSize = buffer.length;
-            info.mediaType = res.headers[HEADER_CONTENT_TYPE];
-            resolve(info);
-            resolved = true;
+          if (!finished) {
+            try {
+              // might get here when file size is small enough
+              const buffer = Buffer.concat(chunks);
+              const info = imageSize(buffer);
+              info.fileSize = buffer.length;
+              info.mediaType = res.headers[HEADER_CONTENT_TYPE];
+              resolve(info);
+            } catch (e) {
+              reject(e);
+            }
+            finished = true;
           }
         });
     } else {

@@ -34,6 +34,21 @@ test('options work when fetching', async () => {
   expect(info.mediaType).toBe('image/jpeg');
 });
 
+test('downloading too little data throws Corrupt JPG exception', async () => {
+  // A big JPG picture
+  const url = 'https://www.nasa.gov/sites/default/files/thumbnails/image/milkyway.jpg';
+  let error;
+  try {
+    info = await fetchInfo(url, {
+      // download as little data as possible
+      downloadImgBytes: 8,
+      isImage: true,
+    });
+  } catch (e) {
+    error = e;
+  }
+  expect(error).not.toBeUndefined();
+});
 
 test('the fetch fails with 404', async () => {
   await expect(fetchInfo('https://google.com/this/does/not/exist_'))
